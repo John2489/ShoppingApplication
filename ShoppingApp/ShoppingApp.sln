@@ -3,9 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29519.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingApp", "ShoppingApp\ShoppingApp.csproj", "{BCE42BC9-DD6C-456D-85EB-137CA851D910}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "View", "ShoppingApp\View.csproj", "{BCE42BC9-DD6C-456D-85EB-137CA851D910}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminAdder", "AdminAdder\AdminAdder.csproj", "{9AA106E1-BD9F-43E7-AB0C-F82998EE41FD}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{22F71F43-90AA-4D2E-8B4F-6785FFB49143}"
+	ProjectSection(SolutionItems) = preProject
+		ToDo.txt = ToDo.txt
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{40BB6F97-CA3B-40FB-A667-9C5511EF0B77}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewModel", "View\ViewModel.csproj", "{377C4D6C-298C-449C-A7F7-0B810B83EB09}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +24,14 @@ Global
 		{BCE42BC9-DD6C-456D-85EB-137CA851D910}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCE42BC9-DD6C-456D-85EB-137CA851D910}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCE42BC9-DD6C-456D-85EB-137CA851D910}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9AA106E1-BD9F-43E7-AB0C-F82998EE41FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9AA106E1-BD9F-43E7-AB0C-F82998EE41FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9AA106E1-BD9F-43E7-AB0C-F82998EE41FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9AA106E1-BD9F-43E7-AB0C-F82998EE41FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40BB6F97-CA3B-40FB-A667-9C5511EF0B77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40BB6F97-CA3B-40FB-A667-9C5511EF0B77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40BB6F97-CA3B-40FB-A667-9C5511EF0B77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40BB6F97-CA3B-40FB-A667-9C5511EF0B77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{377C4D6C-298C-449C-A7F7-0B810B83EB09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{377C4D6C-298C-449C-A7F7-0B810B83EB09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{377C4D6C-298C-449C-A7F7-0B810B83EB09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{377C4D6C-298C-449C-A7F7-0B810B83EB09}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
