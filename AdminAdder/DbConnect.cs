@@ -14,7 +14,8 @@ namespace AdminAdder
         public string Model { get; set; }
         public int Cost { get; set; }
         public int Quantity { get; set; }
-        public string Image { get; set; }
+        public byte[] Image { get; set; }
+        public int ReservedQuantity { get; set; }
     }
     public partial class ShopContext : DbContext
     {
@@ -34,7 +35,7 @@ namespace AdminAdder
 
     static class DbAdding
     {
-        public static void AddInDB(string name, string model, int cost, int quantity, string image)
+        public static void AddInDB(string name, string model, int cost, int quantity, byte[] image)
         {
             using (ShopContext db = new ShopContext())
             {
@@ -45,7 +46,8 @@ namespace AdminAdder
                     Model = model,
                     Cost = cost,
                     Quantity = quantity,
-                    Image = image
+                    Image = image,
+                    ReservedQuantity = 0
                 };
                 db.Items.Add(item);
                 db.SaveChanges();

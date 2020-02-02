@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
+using Microsoft.Win32;
 
 
 namespace AdminAdder
@@ -44,13 +46,9 @@ namespace AdminAdder
             {
                 MessageBox.Show("Fild is free or you entered not a number!");
             }
-            else if (Image.Text == null || Image.Text == "")
+            else if (IfImageFileExist(Image.Text))
             {
-                Image.Text = @"D:\solutions\acadamy\ShoppingApplication\Data\Images\NONE.jpg";
-            }
-            else
-            {
-                DbAdding.AddInDB(Brand.Text, Series.Text, Convert.ToInt32(Cost.Text), Convert.ToInt32(Quantity.Text), Image.Text);
+                DbAdding.AddInDB(Brand.Text, Series.Text, Convert.ToInt32(Cost.Text), Convert.ToInt32(Quantity.Text), GetImageFile(Image.Text));
                 MessageBox.Show("Sent successfully!");
                 Brand.Text = "";
                 Series.Text = "";
@@ -58,6 +56,42 @@ namespace AdminAdder
                 Quantity.Text = "";
                 Image.Text = @"D:\solutions\acadamy\ShoppingApplication\Data\Images\NONE.jpg";
             }
+            else
+            {
+                MessageBox.Show("File wasn't found.");
+            }
+
         }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.InitialDirectory = @"D:\solutions\acadamy\ShoppingApplication\Data\Images\";
+            openFileDialog.Filter = "Image files (*.png;*.jpeg;*.jpg)|*.png;*.jpeg;*.jpg|All files (*.*)|*.*";
+            if (openFileDialog.ShowDialog() == true)
+            {
+                Image.Text = openFileDialog.FileName;
+            }
+        }
+        private static byte[] GetImageFile(string fileName)
+        {
+            byte[] imageData;
+            try
+            {
+                using (System.IO.FileStream fs = new System.IO.FileStream(fileName, FileMode.Open))
+                {
+                    imageData = new byte[fs.Length];
+                    fs.Read(imageData, 0, imageData.Length);
+                }
+                return imageData;
+            }
+            catch (FileNotFoundException e)
+            {
+                MessageBox.Show("File wasn't found.");
+                return null;
+            }
+        }
+        private static bool IfImageFileExist(string fileName) => File.Exists(fileName);
+
     }
 }
