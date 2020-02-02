@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using ShoppingApp.Model;
+using System.Windows;
 
 namespace ShoppingApp.ViewModel
 {
@@ -13,15 +13,19 @@ namespace ShoppingApp.ViewModel
             Brand = brand;
             Series = series;
             Image = image;
-            Cost = string.Concat(cost.ToString(), "$");
+            Cost = cost;
             Quantity = quantiry;
+            QuantityOrdered = 10;
         }
         public int Id { get; set; }
         public string Brand { get; set; }
         public string Series { get; set; }
         public string Image { get; set; }
-        public string Cost { get; set; }
+        public int Cost { get; set; }
         public int Quantity { get; set; }
+        public int QuantityOrdered { get; set; }
+        public object[] Font { get; set; } = new object [2] { null, "Add"};
+        public bool Ordered { get; set; }
     }
 
     public class MainViewModel
