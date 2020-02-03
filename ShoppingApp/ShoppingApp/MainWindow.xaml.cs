@@ -14,21 +14,28 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ShoppingApp.ViewModel;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+
 
 namespace ShoppingApp.View
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    /// 
     public partial class MainWindow : Window
     {
         private MainViewModel MainViewModel { get; set; } = new MainViewModel();
         private CreateOrderedList CreateOrderedList { get; set; }
-
+        private string TotalAmount { get; set; } = "Hidden";
         public MainWindow()
         {
             InitializeComponent();
             DataContext = MainViewModel;
+            PlaceForAllItems.StaticAllItems = MainViewModel.AllItems;
         }
 
         private void Image_MouseEnter(object sender, MouseEventArgs e)
@@ -40,11 +47,12 @@ namespace ShoppingApp.View
         {
             MainViewModel = new MainViewModel();
             DataContext = MainViewModel;
+            PlaceForAllItems.StaticAllItems = MainViewModel.AllItems;
             orderedQuant.Content = 0;
         }
         private void CheckOut_Click(object sender, RoutedEventArgs e)
         {
-            if (CheckDB.PossibilityOrder(MainViewModel.AllItems))
+            if (CheckDB.PossibilityOrder())
             {
                 CreateOrderedList = new CreateOrderedList(MainViewModel.AllItems);
                 DataContext = CreateOrderedList;
@@ -53,8 +61,10 @@ namespace ShoppingApp.View
             }
             else
             {
+                CheckDB.TakeOffAllReserved(MainViewModel.AllItems);
                 MessageBox.Show("Sorry, something went wrong, please try again");
                 MainViewModel = new MainViewModel();
+                PlaceForAllItems.StaticAllItems = MainViewModel.AllItems;
                 DataContext = MainViewModel;
                 orderedQuant.Content = 0;
             }
@@ -69,46 +79,52 @@ namespace ShoppingApp.View
         private void AddInBasket_Click(object sender, RoutedEventArgs e)
         {
             Button add = (sender as Button);
-
             if (add.Content.ToString() == "Remove")
             {
-                MainViewModel.AllItems.Where(t => t.Id.ToString() == add.Tag.ToString()).FirstOrDefault().Ordered = false;
-                add.Content = "Add";
-                MainViewModel.AllItems.Where(t => t.Id.ToString() == add.Tag.ToString()).FirstOrDefault().Font[1] = "Add";
-                MainViewModel.AllItems.Where(t => t.Id.ToString() == add.Tag.ToString()).FirstOrDefault().Font[0] = FontWeights.Normal;
+                CheckDB.SetOrderedItem((int)add.Tag, -1);
+                MainViewModel.AllItems.Where(t => t.Id == (int)add.Tag).FirstOrDefault().NotOrdered = true;
+                MainViewModel.AllItems.Where(t => t.Id == (int)add.Tag).FirstOrDefault().Font[1] = "Add";
+                MainViewModel.AllItems.Where(t => t.Id == (int)add.Tag).FirstOrDefault().Font[0] = FontWeights.Normal;
                 orderedQuant.Content = Convert.ToInt32(orderedQuant.Content) - 1;
-
             }
             else
             {
-                if (MainViewModel.AllItems.Where(t => t.Id.ToString() == add.Tag.ToString()).FirstOrDefault().QuantityOrdered > MainViewModel.AllItems.Where(t => t.Id.ToString() == add.Tag.ToString()).FirstOrDefault().Quantity)
+                if (CheckDB.IfPermitedQuantity((int)add.Tag))
                 {
-                    MessageBox.Show($"Sorry, you can order olny {MainViewModel.AllItems.Where(t => t.Id.ToString() == add.Tag.ToString()).FirstOrDefault().Quantity} units");
+                    CheckDB.SetOrderedItem((int)add.Tag, 1);
+                    orderedQuant.Content = Convert.ToInt32(orderedQuant.Content) + 1;
+                    MainViewModel.AllItems.Where(t => t.Id == (int)add.Tag).FirstOrDefault().NotOrdered = false;
+                    MainViewModel.AllItems.Where(t => t.Id == (int)add.Tag).FirstOrDefault().Font[1] = "Remove";
+                    MainViewModel.AllItems.Where(t => t.Id == (int)add.Tag).FirstOrDefault().Font[0] = FontWeights.UltraBold;
+                    add.FontWeight = FontWeights.UltraBold;
                 }
                 else
                 {
-                    orderedQuant.Content = Convert.ToInt32(orderedQuant.Content) + 1;
-                    MainViewModel.AllItems.Where(t => t.Id.ToString() == add.Tag.ToString()).FirstOrDefault().Ordered = true;
-                    add.Content = "Remove";
-                    MainViewModel.AllItems.Where(t => t.Id.ToString() == add.Tag.ToString()).FirstOrDefault().Font[1] = "Remove";
-                    MainViewModel.AllItems.Where(t => t.Id.ToString() == add.Tag.ToString()).FirstOrDefault().Font[0] = FontWeights.UltraBold;
-                    add.FontWeight = FontWeights.UltraBold;
+                    MessageBox.Show($"Sorry, you can order olny {CheckDB.GetPermitedQuantity((int)add.Tag)} units of this item.");
                 }
             }
             mainList.Items.Refresh();
         }
         private void Increase_Click(object sender, RoutedEventArgs e)
         {
-            MainViewModel.AllItems.Where(t => t.Id.ToString() == (sender as Button).Tag.ToString()).FirstOrDefault().QuantityOrdered++;
-            mainList.Items.Refresh();
+            Button increase = (sender as Button);
+            if (MainViewModel.AllItems.Where(t => t.Id == (int)increase.Tag).FirstOrDefault().NotOrdered)
+            {
+                MainViewModel.AllItems.Where(t => t.Id == (int)increase.Tag).FirstOrDefault().QuantityOrdered++;
+                mainList.Items.Refresh();
+            }
         }
         private void Deacrease_Click(object sender, RoutedEventArgs e)
         {
-            if (MainViewModel.AllItems.Where(t => t.Id.ToString() == (sender as Button).Tag.ToString()).FirstOrDefault().QuantityOrdered > 10)
+            Button decrease = (sender as Button);
+            if (MainViewModel.AllItems.Where(t => t.Id == (int)decrease.Tag).FirstOrDefault().NotOrdered)
             {
-                MainViewModel.AllItems.Where(t => t.Id.ToString() == (sender as Button).Tag.ToString()).FirstOrDefault().QuantityOrdered--;
+                if (MainViewModel.AllItems.Where(t => t.Id == (int)decrease.Tag).FirstOrDefault().QuantityOrdered > 10)
+                {
+                    MainViewModel.AllItems.Where(t => t.Id == (int)decrease.Tag).FirstOrDefault().QuantityOrdered--;
+                }
+                mainList.Items.Refresh();
             }
-            mainList.Items.Refresh();
         }
         private void TextBoxOrdered_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -117,9 +133,9 @@ namespace ShoppingApp.View
             {
                 if (Convert.ToInt32(textBox.Text) < 10)
                 {
-                    MainViewModel.AllItems.Where(t => t.Id.ToString() == (sender as TextBox).Tag.ToString()).FirstOrDefault().QuantityOrdered = 10;
+                    MainViewModel.AllItems.Where(t => t.Id == (int)(sender as TextBox).Tag).FirstOrDefault().QuantityOrdered = 10;
                 }
-                MainViewModel.AllItems.Where(t => t.Id.ToString() == (sender as TextBox).Tag.ToString()).FirstOrDefault().QuantityOrdered = Convert.ToInt32(textBox.Text);
+                MainViewModel.AllItems.Where(t => t.Id == (int)(sender as TextBox).Tag).FirstOrDefault().QuantityOrdered = Convert.ToInt32(textBox.Text);
             }
         }
         private void TextBoxOrdered_LostFocus(object sender, RoutedEventArgs e)
@@ -128,12 +144,12 @@ namespace ShoppingApp.View
             if (int.TryParse(textBox.Text, out _))
             {
                 if (Convert.ToInt32(textBox.Text) < 10)
-                    MainViewModel.AllItems.Where(t => t.Id.ToString() == (sender as TextBox).Tag.ToString()).FirstOrDefault().QuantityOrdered = 10;
+                    MainViewModel.AllItems.Where(t => t.Id == (int)(sender as TextBox).Tag).FirstOrDefault().QuantityOrdered = 10;
                 mainList.Items.Refresh();
             }
             else
             {
-                MainViewModel.AllItems.Where(t => t.Id.ToString() == (sender as TextBox).Tag.ToString()).FirstOrDefault().QuantityOrdered = 10;
+                MainViewModel.AllItems.Where(t => t.Id == (int)(sender as TextBox).Tag).FirstOrDefault().QuantityOrdered = 10;
                 mainList.Items.Refresh();
             }
         }
@@ -142,6 +158,7 @@ namespace ShoppingApp.View
     {
         public MainWindow2()
         {
+
         }
     }
 }

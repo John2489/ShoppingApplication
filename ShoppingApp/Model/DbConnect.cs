@@ -14,7 +14,8 @@ namespace ShoppingApp.Model
         public string Model { get; set; }
         public int Cost { get; set; }
         public int Quantity { get; set; }
-        public string Image { get; set; }
+        public byte[] Image { get; set; }
+        public int ReservedQuantity { get; set; }
     }
     public partial class ShopContext : DbContext
     {

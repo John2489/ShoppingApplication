@@ -7,8 +7,8 @@
         mc:Ignorable="d"
         x:Name="mainWidow"
         Title="MainWindow" Height="750" Width="680">
-    <Grid Name="firstGrid"  Height="750" HorizontalAlignment="Center" Width="680">
-        <ListView x:Name="mainList" ItemsSource="{Binding AllItems}" Margin="30,50,30,100">
+    <Grid Name="firstGrid" Height="750" HorizontalAlignment="Center" Width="680">
+        <ListView x:Name="mainList" Visibility="Hidden" Margin="30,50,30,100">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Width="100" Header="Brand">
@@ -50,7 +50,7 @@
                             <DataTemplate>
                                 <StackPanel Width="50" HorizontalAlignment="Center" VerticalAlignment="Top">
                                     <Button Name="increase" Content="+" HorizontalAlignment="Center" VerticalAlignment="Top" Width="20" Height="20" Tag="{Binding Id}" Click="Increase_Click"/>
-                                    <TextBox x:Name="quantity"  HorizontalAlignment="Center" Text="{Binding QuantityOrdered}" MaxLength="3" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" Tag="{Binding Id}" TextChanged="TextBoxOrdered_TextChanged" LostFocus="TextBoxOrdered_LostFocus"/>
+                                    <TextBox x:Name="quantity" IsEnabled="{Binding NotOrdered}"  HorizontalAlignment="Center" Text="{Binding QuantityOrdered}" MaxLength="3" TextWrapping="Wrap" VerticalAlignment="Top" Width="30" Tag="{Binding Id}" TextChanged="TextBoxOrdered_TextChanged" LostFocus="TextBoxOrdered_LostFocus"/>
                                     <Button Name="decrease" Content="-" HorizontalAlignment="Center" VerticalAlignment="Top" Width="20" Height="20" Tag="{Binding Id}" Click="Deacrease_Click"/>
                                 </StackPanel>
                             </DataTemplate>
@@ -66,18 +66,35 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Label Content="Choose products:" HorizontalAlignment="Center" Margin="0,15,0,0" VerticalAlignment="Top" FontSize="18" FontStyle="Italic" FontWeight="Bold" FontFamily="Ink Free"/>
-        <Label Content="Quantity of goods ordered:" HorizontalAlignment="Left" Margin="140,663,0,0" VerticalAlignment="Top" FontSize="14" FontFamily="Ink Free" FontWeight="Bold" FontStyle="Italic"/>
-        <Label Name="orderedQuant"  Content="0" HorizontalAlignment="Left" Margin="320,660,0,0" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" FontFamily="Ink Free"/>
-        <Button Content="Go to checkout" HorizontalAlignment="Left" Margin="359,665,0,0" VerticalAlignment="Top" FontSize="14" FontStyle="Normal" FontWeight="Bold" Click="CheckOut_Click"/>
-        <Button Content="Refresh" HorizontalAlignment="Left" Margin="565,21,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.136,-0.8" Width="85" Click="Refresh_Click"/>
-        <ListBox Name="resultOrdered" ItemsSource="{Binding ChoosenList}" Margin="50,80,200,400" Visibility="Visible" AlternationCount="2">
+        <Label Content="Choose products:" Visibility="Hidden" HorizontalAlignment="Center" Margin="0,15,0,0" VerticalAlignment="Top" FontSize="18" FontStyle="Italic" FontWeight="Bold" FontFamily="Ink Free"/>
+        <Label Content="Quantity of goods ordered:" Visibility="Hidden" HorizontalAlignment="Left" Margin="140,663,0,0" VerticalAlignment="Top" FontSize="14" FontFamily="Ink Free" FontWeight="Bold" FontStyle="Italic"/>
+        <Label Name="orderedQuant" Visibility="Hidden" Content="0" HorizontalAlignment="Left" Margin="320,660,0,0" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" FontFamily="Ink Free"/>
+        <Button Content="Go to checkout" Visibility="Hidden" HorizontalAlignment="Left" Margin="359,665,0,0" VerticalAlignment="Top" FontSize="14" FontStyle="Normal" FontWeight="Bold" Click="CheckOut_Click"/>
+        <Button Content="Refresh" Visibility="Hidden" HorizontalAlignment="Left" Margin="565,21,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.136,-0.8" Width="85" Click="Refresh_Click"/>
+        <Label Content="Checkout:" HorizontalAlignment="Center" Margin="-150,20,0,0" VerticalAlignment="Top" FontSize="24" FontStyle="Italic" FontWeight="Bold" FontFamily="Ink Free"/>
+        <Label Content="TotalAmound:" HorizontalAlignment="Center" Margin="450,100,0,0" VerticalAlignment="Top" FontSize="18" FontStyle="Italic" FontWeight="Bold" FontFamily="Ink Free"/>
+        <Label Content="TotalAmound:" HorizontalAlignment="Center" Margin="450,150,0,0" VerticalAlignment="Top" FontSize="22" FontWeight="Bold" FontFamily="Ink Free"/>
+
+        <ListBox Name="resultOrdered" Visibility="Visible" ItemsSource="{Binding ChoosenList}" Margin="50,80,200,400" AlternationCount="2">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding InfoLine}"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+        <TextBox Text="TextBox" Height="25" Margin="83,375,326,350"/>
+        <TextBox Text="TextBox" Height="25" Margin="83,415,326,310"/>
+        <TextBox Text="TextBox" Height="25" Margin="83,455,326,270"/>
+        <TextBox Text="TextBox" Height="25" Margin="83,495,326,230"/>
+        <TextBox Text="TextBox" Margin="83,535,326,113"/>
+        <Label Content="First Name:" FontSize="10" HorizontalAlignment="Left" Margin="78,355,0,0" Height="23" Width="73" VerticalAlignment="Top"/>
+
+        <Label Content="Label" HorizontalAlignment="Left" Margin="389,376,0,0" Height="100" Width="235" VerticalAlignment="Top"/>
+        <Label Content="Last Name:" FontSize="10" HorizontalAlignment="Left" Margin="78,396,0,0" Height="23" Width="73" VerticalAlignment="Top"/>
+        <Label Content="Email:" FontSize="10" HorizontalAlignment="Left" Margin="78,436,0,0" Height="23" Width="73" VerticalAlignment="Top"/>
+        <Label Content="Contact phone:" FontSize="10" HorizontalAlignment="Left" Margin="78,476,0,0" Height="22" Width="82" VerticalAlignment="Top"/>
+        <Label Content="Delivery address:" FontSize="10" HorizontalAlignment="Left" Margin="78,516,0,0" Height="22" Width="86" VerticalAlignment="Top"/>
+
     </Grid>
 </Window>
 
