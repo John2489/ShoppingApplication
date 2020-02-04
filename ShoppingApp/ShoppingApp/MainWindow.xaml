@@ -8,7 +8,7 @@
         x:Name="mainWidow"
         Title="MainWindow" Height="750" Width="680">
     <Grid Name="firstGrid" Height="750" HorizontalAlignment="Center" Width="680">
-        <ListView x:Name="mainList" Visibility="Hidden" Margin="30,50,30,100">
+        <ListView x:Name="mainList" Visibility="Visible" ItemsSource="{Binding AllItems}" Margin="30,50,30,100">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Width="100" Header="Brand">
@@ -66,35 +66,50 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Label Content="Choose products:" Visibility="Hidden" HorizontalAlignment="Center" Margin="0,15,0,0" VerticalAlignment="Top" FontSize="18" FontStyle="Italic" FontWeight="Bold" FontFamily="Ink Free"/>
-        <Label Content="Quantity of goods ordered:" Visibility="Hidden" HorizontalAlignment="Left" Margin="140,663,0,0" VerticalAlignment="Top" FontSize="14" FontFamily="Ink Free" FontWeight="Bold" FontStyle="Italic"/>
-        <Label Name="orderedQuant" Visibility="Hidden" Content="0" HorizontalAlignment="Left" Margin="320,660,0,0" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" FontFamily="Ink Free"/>
-        <Button Content="Go to checkout" Visibility="Hidden" HorizontalAlignment="Left" Margin="359,665,0,0" VerticalAlignment="Top" FontSize="14" FontStyle="Normal" FontWeight="Bold" Click="CheckOut_Click"/>
-        <Button Content="Refresh" Visibility="Hidden" HorizontalAlignment="Left" Margin="565,21,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.136,-0.8" Width="85" Click="Refresh_Click"/>
-        <Label Content="Checkout:" HorizontalAlignment="Center" Margin="-150,20,0,0" VerticalAlignment="Top" FontSize="24" FontStyle="Italic" FontWeight="Bold" FontFamily="Ink Free"/>
-        <Label Content="TotalAmound:" HorizontalAlignment="Center" Margin="450,100,0,0" VerticalAlignment="Top" FontSize="18" FontStyle="Italic" FontWeight="Bold" FontFamily="Ink Free"/>
-        <Label Content="TotalAmound:" HorizontalAlignment="Center" Margin="450,150,0,0" VerticalAlignment="Top" FontSize="22" FontWeight="Bold" FontFamily="Ink Free"/>
+        <Label Name="chooseProductsLabel" Content="Choose products:" Visibility="Visible" HorizontalAlignment="Center" Margin="0,15,0,0" VerticalAlignment="Top" FontSize="18" FontStyle="Italic" FontWeight="Bold" FontFamily="Ink Free"/>
+        <Label Name="quantityOfGoodsOrderedLabel" Content="Quantity of goods ordered:" Visibility="Visible" HorizontalAlignment="Left" Margin="140,663,0,0" VerticalAlignment="Top" FontSize="14" FontFamily="Ink Free" FontWeight="Bold" FontStyle="Italic"/>
+        <Label Name="orderedQuantLabel" Visibility="Visible" Content="0" HorizontalAlignment="Left" Margin="320,660,0,0" VerticalAlignment="Top" FontSize="18" FontWeight="Bold" FontFamily="Ink Free"/>
+        <Button Name="goToCheckOutButton" Content="Go to checkout" Visibility="Visible" HorizontalAlignment="Left" Margin="359,665,0,0" VerticalAlignment="Top" FontSize="14" FontStyle="Normal" FontWeight="Bold" Click="CheckOut_Click"/>
+        <Button Name="refreshButton" Content="Refresh" Visibility="Visible" HorizontalAlignment="Left" Margin="565,21,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.136,-0.8" Width="85" Click="Refresh_Click"/>
+        
+        
+        
+        <Label Name="checkoutLabel" Visibility="Hidden" Content="Checkout:" HorizontalAlignment="Center" Margin="-150,20,0,0" VerticalAlignment="Top" FontSize="24" FontStyle="Italic" FontWeight="Bold" FontFamily="Ink Free"/>
+        <Label Name="totalAmoundLabel" Visibility="Hidden"  Content="TotalAmound:" HorizontalAlignment="Center" Margin="450,100,0,0" VerticalAlignment="Top" FontSize="18" FontStyle="Italic" FontWeight="Bold" FontFamily="Ink Free"/>
+        <Label Name="amountLabel" Visibility="Hidden"  Content="1050$" HorizontalAlignment="Center" Margin="450,150,0,0" VerticalAlignment="Top" FontSize="30" FontWeight="Bold" FontFamily="Ink Free"/>
 
-        <ListBox Name="resultOrdered" Visibility="Visible" ItemsSource="{Binding ChoosenList}" Margin="50,80,200,400" AlternationCount="2">
+        <ListBox Name="resultOrdered" Visibility="Hidden"  ItemsSource="{Binding ChoosenList}" Margin="50,80,200,400" AlternationCount="2">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding InfoLine}"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <TextBox Text="TextBox" Height="25" Margin="83,375,326,350"/>
-        <TextBox Text="TextBox" Height="25" Margin="83,415,326,310"/>
-        <TextBox Text="TextBox" Height="25" Margin="83,455,326,270"/>
-        <TextBox Text="TextBox" Height="25" Margin="83,495,326,230"/>
-        <TextBox Text="TextBox" Margin="83,535,326,113"/>
-        <Label Content="First Name:" FontSize="10" HorizontalAlignment="Left" Margin="78,355,0,0" Height="23" Width="73" VerticalAlignment="Top"/>
+        <TextBox Name="fistNameTextBox" Visibility="Hidden"  Text="" Height="25" Margin="83,375,326,350"/>
+        <TextBox Name="lastNameTextBox" Visibility="Hidden"  Text="" Height="25" Margin="83,415,326,310"/>
+        <TextBox Name="emailTextBox" Visibility="Hidden"  Text="" Height="25" Margin="83,455,326,270"/>
+        <TextBox Name="contactPhoteTextBox" Visibility="Hidden"  Text="" Height="25" Margin="83,495,326,230"/>
+        <TextBox Name="deliveryAddressTextBox" Visibility="Hidden"  Text="" Margin="83,535,326,113"/>
+        <Label Name="firstNameLabel" Visibility="Hidden"  Content="First Name:" FontSize="10" HorizontalAlignment="Left" Margin="78,355,0,0" Height="23" Width="73" VerticalAlignment="Top"/>
+        <Label Name="lastNameLabel" Visibility="Hidden"  Content="Last Name:" FontSize="10" HorizontalAlignment="Left" Margin="78,396,0,0" Height="23" Width="73" VerticalAlignment="Top"/>
+        <Label Name="emailLabel" Visibility="Hidden" Content="Email:" FontSize="10" HorizontalAlignment="Left" Margin="78,436,0,0" Height="23" Width="73" VerticalAlignment="Top"/>
+        <Label Name="contactPhoneLabel" Visibility="Hidden"  Content="Contact phone:" FontSize="10" HorizontalAlignment="Left" Margin="78,476,0,0" Height="22" Width="82" VerticalAlignment="Top"/>
+        <Label Name="deliveryAddressLabel" Visibility="Hidden" Content="Delivery address:" FontSize="10" HorizontalAlignment="Left" Margin="78,516,0,0" Height="22" Width="86" VerticalAlignment="Top"/>
+        <Label Name="deliveryInfiLabel" Visibility="Hidden" Content="Delivery information:" HorizontalAlignment="Center" Margin="350,40,0,0" VerticalAlignment="Center" FontSize="18" FontStyle="Italic" FontWeight="Bold" FontFamily="Ink Free"/>
+        <Border Name="deliveryInfoBlock" Visibility="Hidden" BorderBrush="Red" BorderThickness="4"
+                CornerRadius="10" Background="LightGray"
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Center" Margin="400,250,50,50">
+            <TextBlock Text="Карл у Клары украл караты Карла у Клара украла кларнет, где Клара, где Карл, где каралы, где кларнет?" TextWrapping="Wrap" HorizontalAlignment="Left" Height="100" Width="220" Margin="10,10,10,10" VerticalAlignment="Top"/>
+        </Border>
+        <Border Name="confirmBlockButton" Visibility="Hidden" BorderBrush="Red" BorderThickness="1"
+                CornerRadius="1" Background="LightGray"
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Top"   Margin="528,620,0,0">
+            <Button Content="Confirm" HorizontalAlignment="Left"  FontSize="14" FontStyle="Normal" FontWeight="Bold" VerticalAlignment="Top" Width="100" Height="29"/>
 
-        <Label Content="Label" HorizontalAlignment="Left" Margin="389,376,0,0" Height="100" Width="235" VerticalAlignment="Top"/>
-        <Label Content="Last Name:" FontSize="10" HorizontalAlignment="Left" Margin="78,396,0,0" Height="23" Width="73" VerticalAlignment="Top"/>
-        <Label Content="Email:" FontSize="10" HorizontalAlignment="Left" Margin="78,436,0,0" Height="23" Width="73" VerticalAlignment="Top"/>
-        <Label Content="Contact phone:" FontSize="10" HorizontalAlignment="Left" Margin="78,476,0,0" Height="22" Width="82" VerticalAlignment="Top"/>
-        <Label Content="Delivery address:" FontSize="10" HorizontalAlignment="Left" Margin="78,516,0,0" Height="22" Width="86" VerticalAlignment="Top"/>
-
+        </Border>
+        <Button Name="backButton" Visibility="Hidden" Content="Back" HorizontalAlignment="Left" Margin="400,621,0,0" VerticalAlignment="Top" Width="100" Height="29" Click="ButtonBack_Click"/>
     </Grid>
 </Window>
 

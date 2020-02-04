@@ -48,7 +48,7 @@ namespace ShoppingApp.View
             MainViewModel = new MainViewModel();
             DataContext = MainViewModel;
             PlaceForAllItems.StaticAllItems = MainViewModel.AllItems;
-            orderedQuant.Content = 0;
+            orderedQuantLabel.Content = 0;
         }
         private void CheckOut_Click(object sender, RoutedEventArgs e)
         {
@@ -57,7 +57,30 @@ namespace ShoppingApp.View
                 CreateOrderedList = new CreateOrderedList(MainViewModel.AllItems);
                 DataContext = CreateOrderedList;
                 mainList.Visibility = Visibility.Hidden;
+                chooseProductsLabel.Visibility = Visibility.Hidden;
+                quantityOfGoodsOrderedLabel.Visibility = Visibility.Hidden;
+                orderedQuantLabel.Visibility = Visibility.Hidden;
+                goToCheckOutButton.Visibility = Visibility.Hidden;
+                refreshButton.Visibility = Visibility.Hidden;
+
+                checkoutLabel.Visibility = Visibility.Visible;
+                totalAmoundLabel.Visibility = Visibility.Visible;
+                amountLabel.Visibility = Visibility.Visible;
                 resultOrdered.Visibility = Visibility.Visible;
+                firstNameLabel.Visibility = Visibility.Visible;
+                lastNameLabel.Visibility = Visibility.Visible;
+                emailLabel.Visibility = Visibility.Visible;
+                contactPhoneLabel.Visibility = Visibility.Visible;
+                deliveryAddressLabel.Visibility = Visibility.Visible;
+                deliveryInfiLabel.Visibility = Visibility.Visible;
+                fistNameTextBox.Visibility = Visibility.Visible;
+                lastNameTextBox.Visibility = Visibility.Visible;
+                emailTextBox.Visibility = Visibility.Visible;
+                contactPhoteTextBox.Visibility = Visibility.Visible;
+                deliveryAddressTextBox.Visibility = Visibility.Visible;
+                deliveryInfoBlock.Visibility = Visibility.Visible;
+                confirmBlockButton.Visibility = Visibility.Visible;
+                backButton.Visibility = Visibility.Visible;
             }
             else
             {
@@ -66,7 +89,7 @@ namespace ShoppingApp.View
                 MainViewModel = new MainViewModel();
                 PlaceForAllItems.StaticAllItems = MainViewModel.AllItems;
                 DataContext = MainViewModel;
-                orderedQuant.Content = 0;
+                orderedQuantLabel.Content = 0;
             }
 
             /*
@@ -85,14 +108,14 @@ namespace ShoppingApp.View
                 MainViewModel.AllItems.Where(t => t.Id == (int)add.Tag).FirstOrDefault().NotOrdered = true;
                 MainViewModel.AllItems.Where(t => t.Id == (int)add.Tag).FirstOrDefault().Font[1] = "Add";
                 MainViewModel.AllItems.Where(t => t.Id == (int)add.Tag).FirstOrDefault().Font[0] = FontWeights.Normal;
-                orderedQuant.Content = Convert.ToInt32(orderedQuant.Content) - 1;
+                orderedQuantLabel.Content = Convert.ToInt32(orderedQuantLabel.Content) - 1;
             }
             else
             {
                 if (CheckDB.IfPermitedQuantity((int)add.Tag))
                 {
                     CheckDB.SetOrderedItem((int)add.Tag, 1);
-                    orderedQuant.Content = Convert.ToInt32(orderedQuant.Content) + 1;
+                    orderedQuantLabel.Content = Convert.ToInt32(orderedQuantLabel.Content) + 1;
                     MainViewModel.AllItems.Where(t => t.Id == (int)add.Tag).FirstOrDefault().NotOrdered = false;
                     MainViewModel.AllItems.Where(t => t.Id == (int)add.Tag).FirstOrDefault().Font[1] = "Remove";
                     MainViewModel.AllItems.Where(t => t.Id == (int)add.Tag).FirstOrDefault().Font[0] = FontWeights.UltraBold;
@@ -152,6 +175,37 @@ namespace ShoppingApp.View
                 MainViewModel.AllItems.Where(t => t.Id == (int)(sender as TextBox).Tag).FirstOrDefault().QuantityOrdered = 10;
                 mainList.Items.Refresh();
             }
+        }
+
+        private void ButtonBack_Click(object sender, RoutedEventArgs e)
+        {
+            mainList.Visibility = Visibility.Visible;
+            chooseProductsLabel.Visibility = Visibility.Visible;
+            quantityOfGoodsOrderedLabel.Visibility = Visibility.Visible;
+            orderedQuantLabel.Visibility = Visibility.Visible;
+            goToCheckOutButton.Visibility = Visibility.Visible;
+            refreshButton.Visibility = Visibility.Visible;
+
+            checkoutLabel.Visibility = Visibility.Hidden;
+            totalAmoundLabel.Visibility = Visibility.Hidden;
+            amountLabel.Visibility = Visibility.Hidden;
+            resultOrdered.Visibility = Visibility.Hidden;
+            firstNameLabel.Visibility = Visibility.Hidden;
+            lastNameLabel.Visibility = Visibility.Hidden;
+            emailLabel.Visibility = Visibility.Hidden;
+            contactPhoneLabel.Visibility = Visibility.Hidden;
+            deliveryAddressLabel.Visibility = Visibility.Hidden;
+            deliveryInfiLabel.Visibility = Visibility.Hidden;
+            fistNameTextBox.Visibility = Visibility.Hidden;
+            lastNameTextBox.Visibility = Visibility.Hidden;
+            emailTextBox.Visibility = Visibility.Hidden;
+            contactPhoteTextBox.Visibility = Visibility.Hidden;
+            deliveryAddressTextBox.Visibility = Visibility.Hidden;
+            deliveryInfoBlock.Visibility = Visibility.Hidden;
+            confirmBlockButton.Visibility = Visibility.Hidden;
+            backButton.Visibility = Visibility.Hidden;
+            DataContext = MainViewModel;
+            mainList.Items.Refresh();
         }
     }
     public partial class MainWindow2 : Window
