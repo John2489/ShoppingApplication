@@ -30,7 +30,7 @@ namespace ShoppingApp.View
     {
         private MainViewModel MainViewModel { get; set; } = new MainViewModel();
         private CreateOrderedList CreateOrderedList { get; set; }
-        private string TotalAmount { get; set; } = "Hidden";
+        Order order;
         public MainWindow()
         {
             InitializeComponent();
@@ -54,8 +54,8 @@ namespace ShoppingApp.View
         {
             if (CheckDB.PossibilityOrder())
             {
-                CreateOrderedList = new CreateOrderedList(MainViewModel.AllItems);
-                DataContext = CreateOrderedList;
+                //CreateOrderedList = new CreateOrderedList(MainViewModel.AllItems);
+                //DataContext = CreateOrderedList;
                 mainList.Visibility = Visibility.Hidden;
                 chooseProductsLabel.Visibility = Visibility.Hidden;
                 quantityOfGoodsOrderedLabel.Visibility = Visibility.Hidden;
@@ -67,6 +67,7 @@ namespace ShoppingApp.View
                 totalAmoundLabel.Visibility = Visibility.Visible;
                 amountLabel.Visibility = Visibility.Visible;
                 resultOrdered.Visibility = Visibility.Visible;
+                offerToFillIn.Visibility = Visibility.Visible;
                 firstNameLabel.Visibility = Visibility.Visible;
                 lastNameLabel.Visibility = Visibility.Visible;
                 emailLabel.Visibility = Visibility.Visible;
@@ -81,6 +82,10 @@ namespace ShoppingApp.View
                 deliveryInfoBlock.Visibility = Visibility.Visible;
                 confirmBlockButton.Visibility = Visibility.Visible;
                 backButton.Visibility = Visibility.Visible;
+
+                CreateOrderedList = new CreateOrderedList(MainViewModel.AllItems);
+                order = new Order(CreateOrderedList.ChoosenList);
+                this.DataContext = order;
             }
             else
             {
@@ -190,6 +195,7 @@ namespace ShoppingApp.View
             totalAmoundLabel.Visibility = Visibility.Hidden;
             amountLabel.Visibility = Visibility.Hidden;
             resultOrdered.Visibility = Visibility.Hidden;
+            offerToFillIn.Visibility = Visibility.Hidden;
             firstNameLabel.Visibility = Visibility.Hidden;
             lastNameLabel.Visibility = Visibility.Hidden;
             emailLabel.Visibility = Visibility.Hidden;
@@ -206,6 +212,14 @@ namespace ShoppingApp.View
             backButton.Visibility = Visibility.Hidden;
             DataContext = MainViewModel;
             mainList.Items.Refresh();
+        }
+
+        private void ConfirmButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (order.Validation())
+            {
+                MessageBox.Show(order.FirstName);
+            }
         }
     }
     public partial class MainWindow2 : Window

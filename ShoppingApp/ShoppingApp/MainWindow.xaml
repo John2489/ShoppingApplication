@@ -76,20 +76,42 @@
         
         <Label Name="checkoutLabel" Visibility="Hidden" Content="Checkout:" HorizontalAlignment="Center" Margin="-150,20,0,0" VerticalAlignment="Top" FontSize="24" FontStyle="Italic" FontWeight="Bold" FontFamily="Ink Free"/>
         <Label Name="totalAmoundLabel" Visibility="Hidden"  Content="TotalAmound:" HorizontalAlignment="Center" Margin="450,100,0,0" VerticalAlignment="Top" FontSize="18" FontStyle="Italic" FontWeight="Bold" FontFamily="Ink Free"/>
-        <Label Name="amountLabel" Visibility="Hidden"  Content="1050$" HorizontalAlignment="Center" Margin="450,150,0,0" VerticalAlignment="Top" FontSize="30" FontWeight="Bold" FontFamily="Ink Free"/>
+        <Label Name="amountLabel" Visibility="Hidden"  Content="{Binding TotalCostString}" HorizontalAlignment="Center" Margin="450,150,0,0" VerticalAlignment="Top" FontSize="30" FontWeight="Bold" FontFamily="Ink Free"/>
+        <Label Name="offerToFillIn" Visibility="Hidden"  Content="Fill in all fields and click 'Confirm'" HorizontalAlignment="Center" Margin="0,300,0,0" VerticalAlignment="Top" FontSize="30" FontWeight="Bold" FontFamily="Ink Free"/>
 
-        <ListBox Name="resultOrdered" Visibility="Hidden"  ItemsSource="{Binding ChoosenList}" Margin="50,80,200,400" AlternationCount="2">
+        <ListBox Name="resultOrdered" Visibility="Hidden"  ItemsSource="{Binding Path=ChoosenList}" Margin="50,80,200,470" AlternationCount="2">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding InfoLine}"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <TextBox Name="fistNameTextBox" Visibility="Hidden"  Text="" Height="25" Margin="83,375,326,350"/>
-        <TextBox Name="lastNameTextBox" Visibility="Hidden"  Text="" Height="25" Margin="83,415,326,310"/>
-        <TextBox Name="emailTextBox" Visibility="Hidden"  Text="" Height="25" Margin="83,455,326,270"/>
-        <TextBox Name="contactPhoteTextBox" Visibility="Hidden"  Text="" Height="25" Margin="83,495,326,230"/>
-        <TextBox Name="deliveryAddressTextBox" Visibility="Hidden"  Text="" Margin="83,535,326,113"/>
+
+        <TextBox Name="fistNameTextBox" Visibility="Hidden" Height="25" Margin="83,375,326,350">
+            <TextBox.Text>
+                <Binding Path="FirstName"/>
+            </TextBox.Text>
+        </TextBox>
+        <TextBox Name="lastNameTextBox" Visibility="Hidden" Height="25" Margin="83,415,326,310">
+            <TextBox.Text>
+                <Binding Path="LastName"/>
+            </TextBox.Text>
+        </TextBox>
+        <TextBox Name="emailTextBox" Visibility="Hidden" Height="25" Margin="83,455,326,270">
+            <TextBox.Text>
+                <Binding Path="Email"/>
+            </TextBox.Text>
+        </TextBox>
+        <TextBox Name="contactPhoteTextBox" Visibility="Hidden" Height="25" Margin="83,495,326,230">
+            <TextBox.Text>
+                <Binding Path="Phone"/>
+            </TextBox.Text>
+        </TextBox>
+        <TextBox Name="deliveryAddressTextBox" Visibility="Hidden" Height="100" Margin="83,535,326,113">
+            <TextBox.Text>
+                <Binding Path="Address"/>
+            </TextBox.Text>
+        </TextBox>
         <Label Name="firstNameLabel" Visibility="Hidden"  Content="First Name:" FontSize="10" HorizontalAlignment="Left" Margin="78,355,0,0" Height="23" Width="73" VerticalAlignment="Top"/>
         <Label Name="lastNameLabel" Visibility="Hidden"  Content="Last Name:" FontSize="10" HorizontalAlignment="Left" Margin="78,396,0,0" Height="23" Width="73" VerticalAlignment="Top"/>
         <Label Name="emailLabel" Visibility="Hidden" Content="Email:" FontSize="10" HorizontalAlignment="Left" Margin="78,436,0,0" Height="23" Width="73" VerticalAlignment="Top"/>
@@ -106,7 +128,7 @@
                 CornerRadius="1" Background="LightGray"
                 HorizontalAlignment="Left" 
                 VerticalAlignment="Top"   Margin="528,620,0,0">
-            <Button Content="Confirm" HorizontalAlignment="Left"  FontSize="14" FontStyle="Normal" FontWeight="Bold" VerticalAlignment="Top" Width="100" Height="29"/>
+            <Button Content="Confirm" HorizontalAlignment="Left"  FontSize="14" FontStyle="Normal" FontWeight="Bold" VerticalAlignment="Top" Width="100" Height="29" Click="ConfirmButton_Click"/>
 
         </Border>
         <Button Name="backButton" Visibility="Hidden" Content="Back" HorizontalAlignment="Left" Margin="400,621,0,0" VerticalAlignment="Top" Width="100" Height="29" Click="ButtonBack_Click"/>

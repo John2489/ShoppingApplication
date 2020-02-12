@@ -7,7 +7,6 @@ using System.Linq;
 
 namespace ShoppingApp.ViewModel
 {
-
     public static class CheckDB
     {
         public static bool PossibilityOrder()
@@ -53,6 +52,4 @@ namespace ShoppingApp.ViewModel
             else return false;
         }
     }
-
-
 }
