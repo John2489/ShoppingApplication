@@ -19,7 +19,7 @@ namespace ShoppingApp.View
     {
         private void Application_Exit(object sender, ExitEventArgs e)
         {
-            CheckDB.TakeOffAllReserved(PlaceForAllItems.StaticAllItems);
+            ListViewService.TakeOffAllReserved(PlaceForAllItems.StaticAllItems);
             MessageBox.Show("Bye!!!");
         }
 

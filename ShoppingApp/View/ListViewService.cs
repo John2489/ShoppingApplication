@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace ShoppingApp.ViewModel
 {
-    public static class CheckDB
+    public static class ListViewService
     {
         public static bool PossibilityOrder()
         {

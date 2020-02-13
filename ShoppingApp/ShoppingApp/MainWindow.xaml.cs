@@ -49,10 +49,12 @@ namespace ShoppingApp.View
             DataContext = MainViewModel;
             PlaceForAllItems.StaticAllItems = MainViewModel.AllItems;
             orderedQuantLabel.Content = 0;
+
         }
+
         private void CheckOut_Click(object sender, RoutedEventArgs e)
         {
-            if (CheckDB.PossibilityOrder())
+            if (ListViewService.PossibilityOrder())
             {
                 //CreateOrderedList = new CreateOrderedList(MainViewModel.AllItems);
                 //DataContext = CreateOrderedList;
@@ -74,7 +76,7 @@ namespace ShoppingApp.View
                 contactPhoneLabel.Visibility = Visibility.Visible;
                 deliveryAddressLabel.Visibility = Visibility.Visible;
                 deliveryInfiLabel.Visibility = Visibility.Visible;
-                fistNameTextBox.Visibility = Visibility.Visible;
+                firstNameTextBox.Visibility = Visibility.Visible;
                 lastNameTextBox.Visibility = Visibility.Visible;
                 emailTextBox.Visibility = Visibility.Visible;
                 contactPhoteTextBox.Visibility = Visibility.Visible;
@@ -84,12 +86,19 @@ namespace ShoppingApp.View
                 backButton.Visibility = Visibility.Visible;
 
                 CreateOrderedList = new CreateOrderedList(MainViewModel.AllItems);
-                order = new Order(CreateOrderedList.ChoosenList);
-                this.DataContext = order;
+                if(PlaceForAllItems.StaticOrder == null)
+                {
+                    order = new Order(CreateOrderedList.ChoosenList);
+                    this.DataContext = order;
+                }
+                else
+                {
+                    this.DataContext = PlaceForAllItems.StaticOrder;
+                }
             }
             else
             {
-                CheckDB.TakeOffAllReserved(MainViewModel.AllItems);
+                ListViewService.TakeOffAllReserved(MainViewModel.AllItems);
                 MessageBox.Show("Sorry, something went wrong, please try again");
                 MainViewModel = new MainViewModel();
                 PlaceForAllItems.StaticAllItems = MainViewModel.AllItems;
@@ -109,7 +118,7 @@ namespace ShoppingApp.View
             Button add = (sender as Button);
             if (add.Content.ToString() == "Remove")
             {
-                CheckDB.SetOrderedItem((int)add.Tag, -1);
+                ListViewService.SetOrderedItem((int)add.Tag, -1);
                 MainViewModel.AllItems.Where(t => t.Id == (int)add.Tag).FirstOrDefault().NotOrdered = true;
                 MainViewModel.AllItems.Where(t => t.Id == (int)add.Tag).FirstOrDefault().Font[1] = "Add";
                 MainViewModel.AllItems.Where(t => t.Id == (int)add.Tag).FirstOrDefault().Font[0] = FontWeights.Normal;
@@ -117,9 +126,9 @@ namespace ShoppingApp.View
             }
             else
             {
-                if (CheckDB.IfPermitedQuantity((int)add.Tag))
+                if (ListViewService.IfPermitedQuantity((int)add.Tag))
                 {
-                    CheckDB.SetOrderedItem((int)add.Tag, 1);
+                    ListViewService.SetOrderedItem((int)add.Tag, 1);
                     orderedQuantLabel.Content = Convert.ToInt32(orderedQuantLabel.Content) + 1;
                     MainViewModel.AllItems.Where(t => t.Id == (int)add.Tag).FirstOrDefault().NotOrdered = false;
                     MainViewModel.AllItems.Where(t => t.Id == (int)add.Tag).FirstOrDefault().Font[1] = "Remove";
@@ -128,7 +137,7 @@ namespace ShoppingApp.View
                 }
                 else
                 {
-                    MessageBox.Show($"Sorry, you can order olny {CheckDB.GetPermitedQuantity((int)add.Tag)} units of this item.");
+                    MessageBox.Show($"Sorry, you can order olny {ListViewService.GetPermitedQuantity((int)add.Tag)} units of this item.");
                 }
             }
             mainList.Items.Refresh();
@@ -202,7 +211,7 @@ namespace ShoppingApp.View
             contactPhoneLabel.Visibility = Visibility.Hidden;
             deliveryAddressLabel.Visibility = Visibility.Hidden;
             deliveryInfiLabel.Visibility = Visibility.Hidden;
-            fistNameTextBox.Visibility = Visibility.Hidden;
+            firstNameTextBox.Visibility = Visibility.Hidden;
             lastNameTextBox.Visibility = Visibility.Hidden;
             emailTextBox.Visibility = Visibility.Hidden;
             contactPhoteTextBox.Visibility = Visibility.Hidden;
@@ -218,7 +227,61 @@ namespace ShoppingApp.View
         {
             if (order.Validation())
             {
-                MessageBox.Show(order.FirstName);
+                firstNameTextBox.IsEnabled = false;
+                lastNameTextBox.IsEnabled = false;
+                emailTextBox.IsEnabled = false;
+                contactPhoteTextBox.IsEnabled = false;
+                deliveryAddressTextBox.IsEnabled = false;
+                backButton.IsEnabled = false;
+                confirmButton.IsEnabled = false;
+                order.SetId();
+                PlaceForAllItems.StaticOrder = order;
+                OrderService.SendOrderToDb(order);
+                MessageBox.Show("Sent to DB");
+                int s = 0;
+                string wait = "Please, wait";
+                string answer;
+                bool result = false;
+                Thread check = new Thread(() =>
+                {
+                    while (s != 300)
+                    {
+                        if (wait == "Please, wait....")
+                            wait = "Please, wait";
+
+                        s++;
+                        answer = OrderService.CheckAnswer(order.Id);
+                        if (answer != null)
+                        {
+                            s = 300;
+                            this.Dispatcher.Invoke(new Action(() =>
+                            {
+                                deliveryInfoText.Text = answer;
+                            }));
+                            MessageBox.Show($"Your order has been processed successfully. Thanks for trust.");
+                            result = true;
+                        }
+                        else
+                        {
+                            this.Dispatcher.Invoke(new Action(() =>
+                            {
+                                deliveryInfoText.Text = $"{wait}";
+                            }));
+
+                        }
+                        Thread.Sleep(1000);
+                        wait += ".";
+                    }
+                    if(!result)
+                    {
+                        this.Dispatcher.Invoke(new Action(() =>
+                        {
+                            deliveryInfoText.Text = $"Thank you, your order has arrived, all information will be sent to you by e-mail.";
+                        }));
+                    }
+                });
+                check.IsBackground = true;
+                check.Start();
             }
         }
     }

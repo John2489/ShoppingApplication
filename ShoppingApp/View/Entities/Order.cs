@@ -11,6 +11,7 @@ namespace ShoppingApp.ViewModel
     public class Order
     {
         public ObservableCollection<OrderedItem> ChoosenList { get; set; }
+        public int Id { get; set; }
         public int TotalCost { get; set; }
         public string TotalCostString { get; set; }
         public string FirstName { get; set; } = String.Empty;
@@ -53,7 +54,16 @@ namespace ShoppingApp.ViewModel
                 MessageBox.Show("Incorrect Phone number.");
                 return false;
             }
+            if((Address.Length < 6) || (Address.Length > 200))
+            {
+                MessageBox.Show("Incorrect Address.");
+                return false;
+            }
             return true;
+        }
+        public void SetId()
+        {
+            Id = DateTime.Now.GetHashCode();
         }
     }
 }

@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using ShoppingApp.Model.DBContexts;
+using ShoppingApp.Model.ObjectsForDB;
 namespace ShoppingApp.Model
 {
     public static class CRUDoperators
@@ -57,6 +58,34 @@ namespace ShoppingApp.Model
                 }
             }
             return result;
+        }
+        public static void SendOrder(OrderedObject order)
+        {
+            using(OrderedContext db = new OrderedContext())
+            {
+                db.Add(order);
+                db.SaveChanges();
+            }
+        }
+        public static OrderedObject GetOrderByID(OrderedObject order)
+        {
+            using (OrderedContext db = new OrderedContext())
+            {
+                OrderedObject oo = db.Orders.FirstOrDefault(t => t.Id == order.Id);
+                return oo;
+            }
+        }
+        public static string CheckAnswerInDbById(int id)
+        {
+            using (OrderedContext db = new OrderedContext())
+            {
+                OrderedObject oo = db.Orders.Where(t => t.Id == id).FirstOrDefault();
+                if (oo != null)
+                {
+                    return oo.DeliveryInfo;
+                }
+                else return null;
+            }
         }
     }
 }

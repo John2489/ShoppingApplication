@@ -10,5 +10,6 @@ namespace ShoppingApp.ViewModel
     public static class PlaceForAllItems
     {
         public static ObservableCollection<ImageViewModel> StaticAllItems;
+        public static Order StaticOrder;
     }
 }
