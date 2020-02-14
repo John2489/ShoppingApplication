@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
-using System.IO;
-using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Windows;
 using ShoppingApp.ViewModel;
 
 namespace ShoppingApp.View
@@ -19,13 +10,13 @@ namespace ShoppingApp.View
     {
         private void Application_Exit(object sender, ExitEventArgs e)
         {
-            ListViewService.TakeOffAllReserved(PlaceForAllItems.StaticAllItems);
-            MessageBox.Show("Bye!!!");
+            if(!PlaceForAllItems.ifOrderMade)
+                ListViewService.TakeOffAllReserved(PlaceForAllItems.StaticAllItems);
         }
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            MessageBox.Show("Hello!!!");
+            MessageBox.Show("Thank you for your trust in our company.\nWe save your time.");
         }
     }
 }

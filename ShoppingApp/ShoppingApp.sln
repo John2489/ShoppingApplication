@@ -5,14 +5,11 @@ VisualStudioVersion = 16.0.29519.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "View", "ShoppingApp\View.csproj", "{BCE42BC9-DD6C-456D-85EB-137CA851D910}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{22F71F43-90AA-4D2E-8B4F-6785FFB49143}"
-	ProjectSection(SolutionItems) = preProject
-		ToDo.txt = ToDo.txt
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "Model\Model.csproj", "{40BB6F97-CA3B-40FB-A667-9C5511EF0B77}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{40BB6F97-CA3B-40FB-A667-9C5511EF0B77}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewModel", "View\ViewModel.csproj", "{377C4D6C-298C-449C-A7F7-0B810B83EB09}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewModel", "View\ViewModel.csproj", "{377C4D6C-298C-449C-A7F7-0B810B83EB09}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logger", "Logger\Logger.csproj", "{72FFF1CB-257C-45CA-A9FF-9AEA89D9FC00}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,6 +29,10 @@ Global
 		{377C4D6C-298C-449C-A7F7-0B810B83EB09}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{377C4D6C-298C-449C-A7F7-0B810B83EB09}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{377C4D6C-298C-449C-A7F7-0B810B83EB09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72FFF1CB-257C-45CA-A9FF-9AEA89D9FC00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72FFF1CB-257C-45CA-A9FF-9AEA89D9FC00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72FFF1CB-257C-45CA-A9FF-9AEA89D9FC00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72FFF1CB-257C-45CA-A9FF-9AEA89D9FC00}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

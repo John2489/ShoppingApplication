@@ -1,22 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using ShoppingApp.Model.ObjectsForDB;
 
-
-namespace ShoppingApp.Model
+namespace ShoppingApp.Model.DBContexts
 {
-    public partial class Item
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Model { get; set; }
-        public int Cost { get; set; }
-        public int Quantity { get; set; }
-        public byte[] Image { get; set; }
-        public int ReservedQuantity { get; set; }
-    }
     public partial class ShopContext : DbContext
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

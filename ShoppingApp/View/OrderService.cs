@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ShoppingApp.ViewModel;
 using ShoppingApp.Model.ObjectsForDB;
 using ShoppingApp.Model;
 using System.Linq;
@@ -12,7 +9,6 @@ namespace ShoppingApp.ViewModel
     {
         public static void SendOrderToDb(Order ord)
         {
-            
             CRUDoperators.SendOrder(new OrderedObject
             {
                 Id = ord.Id,

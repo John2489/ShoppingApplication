@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ShoppingApp.View"
         mc:Ignorable="d"
         x:Name="mainWidow"
-        Title="MainWindow" Height="750" Width="680">
+        Title="SPL Global Traid" Height="750" Width="680" Icon="NONE.jpg" ResizeMode="NoResize">
     <Grid Name="firstGrid" Height="750" HorizontalAlignment="Center" Width="680">
         <ListView x:Name="mainList" Visibility="Visible" ItemsSource="{Binding AllItems}" Margin="30,50,30,100">
             <ListView.View>

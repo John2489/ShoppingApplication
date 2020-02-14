@@ -1,14 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using ShoppingApp.Model;
-using System.Windows;
-using System.Linq;
-using System;
+﻿using System.Collections.ObjectModel;
 
 namespace ShoppingApp.ViewModel
 {
     public static class PlaceForAllItems
     {
+        public static bool ifOrderMade = false;
         public static ObservableCollection<ImageViewModel> StaticAllItems;
         public static Order StaticOrder;
     }

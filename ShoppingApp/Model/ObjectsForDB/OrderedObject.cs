@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ShoppingApp.Model.ObjectsForDB
+﻿namespace ShoppingApp.Model.ObjectsForDB
 {
     public partial class OrderedObject
     {

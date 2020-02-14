@@ -1,24 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using ShoppingApp.ViewModel;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
-
 
 namespace ShoppingApp.View
 {
@@ -37,12 +23,6 @@ namespace ShoppingApp.View
             DataContext = MainViewModel;
             PlaceForAllItems.StaticAllItems = MainViewModel.AllItems;
         }
-
-        private void Image_MouseEnter(object sender, MouseEventArgs e)
-        {
-            //change coursore to "hand" style
-        }
-
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
             MainViewModel = new MainViewModel();
@@ -51,13 +31,10 @@ namespace ShoppingApp.View
             orderedQuantLabel.Content = 0;
 
         }
-
         private void CheckOut_Click(object sender, RoutedEventArgs e)
         {
             if (ListViewService.PossibilityOrder())
             {
-                //CreateOrderedList = new CreateOrderedList(MainViewModel.AllItems);
-                //DataContext = CreateOrderedList;
                 mainList.Visibility = Visibility.Hidden;
                 chooseProductsLabel.Visibility = Visibility.Hidden;
                 quantityOfGoodsOrderedLabel.Visibility = Visibility.Hidden;
@@ -105,13 +82,6 @@ namespace ShoppingApp.View
                 DataContext = MainViewModel;
                 orderedQuantLabel.Content = 0;
             }
-
-            /*
-            MainWindow2 mainWindow2 = new MainWindow2();
-            mainWindow2.Height = 200;
-            mainWindow2.Width = 200;
-            mainWindow2.Show();
-            */
         }
         private void AddInBasket_Click(object sender, RoutedEventArgs e)
         {
@@ -227,6 +197,7 @@ namespace ShoppingApp.View
         {
             if (order.Validation())
             {
+                PlaceForAllItems.ifOrderMade = true;
                 firstNameTextBox.IsEnabled = false;
                 lastNameTextBox.IsEnabled = false;
                 emailTextBox.IsEnabled = false;
@@ -237,7 +208,6 @@ namespace ShoppingApp.View
                 order.SetId();
                 PlaceForAllItems.StaticOrder = order;
                 OrderService.SendOrderToDb(order);
-                MessageBox.Show("Sent to DB");
                 int s = 0;
                 string wait = "Please, wait";
                 string answer;
@@ -248,7 +218,6 @@ namespace ShoppingApp.View
                     {
                         if (wait == "Please, wait....")
                             wait = "Please, wait";
-
                         s++;
                         answer = OrderService.CheckAnswer(order.Id);
                         if (answer != null)
@@ -267,7 +236,6 @@ namespace ShoppingApp.View
                             {
                                 deliveryInfoText.Text = $"{wait}";
                             }));
-
                         }
                         Thread.Sleep(1000);
                         wait += ".";
@@ -283,13 +251,6 @@ namespace ShoppingApp.View
                 check.IsBackground = true;
                 check.Start();
             }
-        }
-    }
-    public partial class MainWindow2 : Window
-    {
-        public MainWindow2()
-        {
-
         }
     }
 }

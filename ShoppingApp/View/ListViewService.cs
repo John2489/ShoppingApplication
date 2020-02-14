@@ -14,7 +14,7 @@ namespace ShoppingApp.ViewModel
             List<ImageViewModel> choosenItem = PlaceForAllItems.StaticAllItems.Where(t => !t.NotOrdered).ToList();
             foreach (var item in choosenItem)
             {
-                if (CRUDoperators.GetQuantity(item.Id) - item.QuantityOrdered >= 0)//IfPermitedQuantity(item.Id))
+                if (CRUDoperators.GetQuantity(item.Id) - item.QuantityOrdered >= 0)
                 {
                     return true;
                 }

@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using ShoppingApp.Model.ObjectsForDB;
 using ShoppingApp.Model;
 
 namespace ShoppingApp.ViewModel
@@ -9,7 +8,6 @@ namespace ShoppingApp.ViewModel
     public class MainViewModel
     {
         public ObservableCollection<ImageViewModel> AllItems { get; set; } = new ObservableCollection<ImageViewModel>();
-        public string TotalAmount { get; set; } = "100";
         public MainViewModel()
         {
             SortComparerBrand sortComparerBrand = new SortComparerBrand();

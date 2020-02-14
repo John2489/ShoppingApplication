@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Text.RegularExpressions;
@@ -24,7 +22,7 @@ namespace ShoppingApp.ViewModel
             ChoosenList = choosenList;
             var costs = from t in ChoosenList select t.Cost;
             TotalCost = costs.ToArray().Sum();
-            TotalCostString = String.Concat(TotalCost.ToString(), "$");
+            TotalCostString = string.Concat(TotalCost.ToString(), "$");
         }
         public bool Validation()
         {

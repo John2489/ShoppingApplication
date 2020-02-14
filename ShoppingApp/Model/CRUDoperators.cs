@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using ShoppingApp.Model.DBContexts;
 using ShoppingApp.Model.ObjectsForDB;
+
 namespace ShoppingApp.Model
 {
     public static class CRUDoperators
@@ -29,14 +28,12 @@ namespace ShoppingApp.Model
                 db.SaveChanges();
             }
         }
-
         public static int GetPermitedQuantity(int id)
         {
             int result = 0;
             using (ShopContext db = new ShopContext())
             {
-                //проверить на искл если нет в базе
-                Item item = db.Items.Where(t => t.Id == id).First();
+                Item item = db.Items.Where(t => t.Id == id).FirstOrDefault();
                 if (item != null)
                 {
                     result = item.Quantity - item.ReservedQuantity;
@@ -50,8 +47,7 @@ namespace ShoppingApp.Model
             int result = 0;
             using (ShopContext db = new ShopContext())
             {
-                //проверить на искл если нет в базе
-                Item item = db.Items.Where(t => t.Id == id).First();
+                Item item = db.Items.Where(t => t.Id == id).FirstOrDefault();
                 if (item != null)
                 {
                     result = item.Quantity;

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ShoppingApp.Model;
-
+﻿using System.Collections.Generic;
+using ShoppingApp.Model.ObjectsForDB;
 
 namespace ShoppingApp.ViewModel
 {
