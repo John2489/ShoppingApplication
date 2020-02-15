@@ -32,7 +32,7 @@
                     <GridViewColumn Width="110" Header="Image">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Image Source="{Binding Image}" MaxHeight="100" HorizontalAlignment="Center" MaxWidth="100" Stretch="UniformToFill" MouseEnter="Image_MouseEnter" />
+                                <Image Source="{Binding Image}" MaxHeight="100" HorizontalAlignment="Center" MaxWidth="100" Stretch="UniformToFill" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

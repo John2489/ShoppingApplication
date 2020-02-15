@@ -4,6 +4,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Logger;
 using ShoppingApp.ViewModel;
 
 namespace ShoppingApp.View
@@ -209,12 +210,12 @@ namespace ShoppingApp.View
                 PlaceForAllItems.StaticOrder = order;
                 OrderService.SendOrderToDb(order);
                 int s = 0;
+                int limit = 300;
                 string wait = "Please, wait";
                 string answer;
-                bool result = false;
                 Thread check = new Thread(() =>
                 {
-                    while (s != 300)
+                    while (s != limit)
                     {
                         if (wait == "Please, wait....")
                             wait = "Please, wait";
@@ -222,13 +223,13 @@ namespace ShoppingApp.View
                         answer = OrderService.CheckAnswer(order.Id);
                         if (answer != null)
                         {
-                            s = 300;
+                            ShoppingLogger.logger.Info("Answare came", Environment.CurrentManagedThreadId);
                             this.Dispatcher.Invoke(new Action(() =>
                             {
                                 deliveryInfoText.Text = answer;
                             }));
                             MessageBox.Show($"Your order has been processed successfully. Thanks for trust.");
-                            result = true;
+                            break;
                         }
                         else
                         {
@@ -240,7 +241,7 @@ namespace ShoppingApp.View
                         Thread.Sleep(1000);
                         wait += ".";
                     }
-                    if(!result)
+                    if(s == limit)
                     {
                         this.Dispatcher.Invoke(new Action(() =>
                         {
