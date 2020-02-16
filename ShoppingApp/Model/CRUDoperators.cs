@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Logger;
 using ShoppingApp.Model.DBContexts;
 using ShoppingApp.Model.ObjectsForDB;
 
@@ -9,6 +11,7 @@ namespace ShoppingApp.Model
     {
         public static List<Item> GetAll()
         {
+            ShoppingLogger.logger.Debug("Getting all items from DB.", Environment.CurrentManagedThreadId);
             using (ShopContext db = new ShopContext())
             {
                 List<Item> items = db.Items.ToList();
@@ -17,6 +20,7 @@ namespace ShoppingApp.Model
         }
         public static void SetOrderedItem(int id, int reservedQuantity)
         {
+            ShoppingLogger.logger.Debug("Setting ordered items to DB.", Environment.CurrentManagedThreadId);
             using (ShopContext db = new ShopContext())
             {
                 Item item = db.Items.Where(t => t.Id == id).First();
@@ -30,6 +34,7 @@ namespace ShoppingApp.Model
         }
         public static int GetPermitedQuantity(int id)
         {
+            ShoppingLogger.logger.Debug("Getting permited quantity by Id in DB.", Environment.CurrentManagedThreadId);
             int result = 0;
             using (ShopContext db = new ShopContext())
             {
@@ -44,6 +49,7 @@ namespace ShoppingApp.Model
         }
         public static int GetQuantity(int id)
         {
+            ShoppingLogger.logger.Debug("Getting quantity by Id in DB.", Environment.CurrentManagedThreadId);
             int result = 0;
             using (ShopContext db = new ShopContext())
             {
@@ -57,7 +63,8 @@ namespace ShoppingApp.Model
         }
         public static void SendOrder(OrderedObject order)
         {
-            using(OrderedContext db = new OrderedContext())
+            ShoppingLogger.logger.Debug("Sending order to DB.", Environment.CurrentManagedThreadId);
+            using (OrderedContext db = new OrderedContext())
             {
                 db.Add(order);
                 db.SaveChanges();
@@ -65,6 +72,7 @@ namespace ShoppingApp.Model
         }
         public static OrderedObject GetOrderByID(OrderedObject order)
         {
+            ShoppingLogger.logger.Debug("Getting order by Id in DB.", Environment.CurrentManagedThreadId);
             using (OrderedContext db = new OrderedContext())
             {
                 OrderedObject oo = db.Orders.FirstOrDefault(t => t.Id == order.Id);

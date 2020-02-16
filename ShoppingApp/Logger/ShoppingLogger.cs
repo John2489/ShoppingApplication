@@ -11,7 +11,6 @@ namespace Logger
             logger = new Logger();
             string writePath = System.IO.Path.Combine(Environment.CurrentDirectory, @"logs");
             if (!Directory.Exists(writePath)) Directory.CreateDirectory(writePath);
-
         }
     }
 }

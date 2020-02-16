@@ -20,72 +20,83 @@ namespace ShoppingApp.View
         Order order;
         public MainWindow()
         {
+            ShoppingLogger.logger.Debug("Creating window instans.", Environment.CurrentManagedThreadId);
             InitializeComponent();
             DataContext = MainViewModel;
             PlaceForAllItems.StaticAllItems = MainViewModel.AllItems;
         }
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
+            ShoppingLogger.logger.Info("Click Refresh Button.", Environment.CurrentManagedThreadId);
             MainViewModel = new MainViewModel();
             DataContext = MainViewModel;
+            ListViewService.TakeOffAllReserved(PlaceForAllItems.StaticAllItems);
             PlaceForAllItems.StaticAllItems = MainViewModel.AllItems;
             orderedQuantLabel.Content = 0;
-
         }
         private void CheckOut_Click(object sender, RoutedEventArgs e)
         {
-            if (ListViewService.PossibilityOrder())
+            ShoppingLogger.logger.Info("Click Checkout Button.", Environment.CurrentManagedThreadId);
+            switch (ListViewService.PossibilityOrder())
             {
-                mainList.Visibility = Visibility.Hidden;
-                chooseProductsLabel.Visibility = Visibility.Hidden;
-                quantityOfGoodsOrderedLabel.Visibility = Visibility.Hidden;
-                orderedQuantLabel.Visibility = Visibility.Hidden;
-                goToCheckOutButton.Visibility = Visibility.Hidden;
-                refreshButton.Visibility = Visibility.Hidden;
+                case 1:
+                    mainList.Visibility = Visibility.Hidden;
+                    chooseProductsLabel.Visibility = Visibility.Hidden;
+                    quantityOfGoodsOrderedLabel.Visibility = Visibility.Hidden;
+                    orderedQuantLabel.Visibility = Visibility.Hidden;
+                    goToCheckOutButton.Visibility = Visibility.Hidden;
+                    refreshButton.Visibility = Visibility.Hidden;
 
-                checkoutLabel.Visibility = Visibility.Visible;
-                totalAmoundLabel.Visibility = Visibility.Visible;
-                amountLabel.Visibility = Visibility.Visible;
-                resultOrdered.Visibility = Visibility.Visible;
-                offerToFillIn.Visibility = Visibility.Visible;
-                firstNameLabel.Visibility = Visibility.Visible;
-                lastNameLabel.Visibility = Visibility.Visible;
-                emailLabel.Visibility = Visibility.Visible;
-                contactPhoneLabel.Visibility = Visibility.Visible;
-                deliveryAddressLabel.Visibility = Visibility.Visible;
-                deliveryInfiLabel.Visibility = Visibility.Visible;
-                firstNameTextBox.Visibility = Visibility.Visible;
-                lastNameTextBox.Visibility = Visibility.Visible;
-                emailTextBox.Visibility = Visibility.Visible;
-                contactPhoteTextBox.Visibility = Visibility.Visible;
-                deliveryAddressTextBox.Visibility = Visibility.Visible;
-                deliveryInfoBlock.Visibility = Visibility.Visible;
-                confirmBlockButton.Visibility = Visibility.Visible;
-                backButton.Visibility = Visibility.Visible;
+                    checkoutLabel.Visibility = Visibility.Visible;
+                    totalAmoundLabel.Visibility = Visibility.Visible;
+                    amountLabel.Visibility = Visibility.Visible;
+                    resultOrdered.Visibility = Visibility.Visible;
+                    offerToFillIn.Visibility = Visibility.Visible;
+                    firstNameLabel.Visibility = Visibility.Visible;
+                    lastNameLabel.Visibility = Visibility.Visible;
+                    emailLabel.Visibility = Visibility.Visible;
+                    contactPhoneLabel.Visibility = Visibility.Visible;
+                    deliveryAddressLabel.Visibility = Visibility.Visible;
+                    deliveryInfiLabel.Visibility = Visibility.Visible;
+                    firstNameTextBox.Visibility = Visibility.Visible;
+                    lastNameTextBox.Visibility = Visibility.Visible;
+                    emailTextBox.Visibility = Visibility.Visible;
+                    contactPhoteTextBox.Visibility = Visibility.Visible;
+                    deliveryAddressTextBox.Visibility = Visibility.Visible;
+                    deliveryInfoBlock.Visibility = Visibility.Visible;
+                    confirmBlockButton.Visibility = Visibility.Visible;
+                    backButton.Visibility = Visibility.Visible;
 
-                CreateOrderedList = new CreateOrderedList(MainViewModel.AllItems);
-                if(PlaceForAllItems.StaticOrder == null)
-                {
-                    order = new Order(CreateOrderedList.ChoosenList);
-                    this.DataContext = order;
-                }
-                else
-                {
-                    this.DataContext = PlaceForAllItems.StaticOrder;
-                }
-            }
-            else
-            {
-                ListViewService.TakeOffAllReserved(MainViewModel.AllItems);
-                MessageBox.Show("Sorry, something went wrong, please try again");
-                MainViewModel = new MainViewModel();
-                PlaceForAllItems.StaticAllItems = MainViewModel.AllItems;
-                DataContext = MainViewModel;
-                orderedQuantLabel.Content = 0;
+                    CreateOrderedList = new CreateOrderedList(MainViewModel.AllItems);
+                    if (PlaceForAllItems.StaticOrder == null)
+                    {
+                        order = new Order(CreateOrderedList.ChoosenList);
+                        this.DataContext = order;
+                    }
+                    else
+                    {
+                        this.DataContext = PlaceForAllItems.StaticOrder;
+                    }
+                    break;
+                case 0:
+                    if (!ListViewService.IfAnyOrdered())
+                    {
+                        MessageBox.Show("Sorry, you did ordered nothing.");
+                    }
+                    break;
+                case -1:
+                    MessageBox.Show("Sorry, something went wrong, please try again");
+                    ListViewService.TakeOffAllReserved(MainViewModel.AllItems);
+                    MainViewModel = new MainViewModel();
+                    PlaceForAllItems.StaticAllItems = MainViewModel.AllItems;
+                    DataContext = MainViewModel;
+                    orderedQuantLabel.Content = 0;
+                    break;
             }
         }
         private void AddInBasket_Click(object sender, RoutedEventArgs e)
         {
+            ShoppingLogger.logger.Info("Click AddInBasket Button.", Environment.CurrentManagedThreadId);
             Button add = (sender as Button);
             if (add.Content.ToString() == "Remove")
             {
@@ -115,6 +126,7 @@ namespace ShoppingApp.View
         }
         private void Increase_Click(object sender, RoutedEventArgs e)
         {
+            ShoppingLogger.logger.Info("Click Increase Button.", Environment.CurrentManagedThreadId);
             Button increase = (sender as Button);
             if (MainViewModel.AllItems.Where(t => t.Id == (int)increase.Tag).FirstOrDefault().NotOrdered)
             {
@@ -124,6 +136,7 @@ namespace ShoppingApp.View
         }
         private void Deacrease_Click(object sender, RoutedEventArgs e)
         {
+            ShoppingLogger.logger.Info("Click Deacrease Button.", Environment.CurrentManagedThreadId);
             Button decrease = (sender as Button);
             if (MainViewModel.AllItems.Where(t => t.Id == (int)decrease.Tag).FirstOrDefault().NotOrdered)
             {
@@ -136,6 +149,7 @@ namespace ShoppingApp.View
         }
         private void TextBoxOrdered_TextChanged(object sender, TextChangedEventArgs e)
         {
+            ShoppingLogger.logger.Info("Text in TextBoxOrdered has been changed.", Environment.CurrentManagedThreadId);
             TextBox textBox = (TextBox)sender;
             if (int.TryParse(textBox.Text, out _))
             {
@@ -148,6 +162,7 @@ namespace ShoppingApp.View
         }
         private void TextBoxOrdered_LostFocus(object sender, RoutedEventArgs e)
         {
+            ShoppingLogger.logger.Info("Focus has been lost from TextBoxOrbered.", Environment.CurrentManagedThreadId);
             TextBox textBox = (TextBox)sender;
             if (int.TryParse(textBox.Text, out _))
             {
@@ -164,6 +179,7 @@ namespace ShoppingApp.View
 
         private void ButtonBack_Click(object sender, RoutedEventArgs e)
         {
+            ShoppingLogger.logger.Info("Click Back Button.", Environment.CurrentManagedThreadId);
             mainList.Visibility = Visibility.Visible;
             chooseProductsLabel.Visibility = Visibility.Visible;
             quantityOfGoodsOrderedLabel.Visibility = Visibility.Visible;
@@ -196,6 +212,7 @@ namespace ShoppingApp.View
 
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
+            ShoppingLogger.logger.Info("Click Confirm Button.", Environment.CurrentManagedThreadId);
             if (order.Validation())
             {
                 PlaceForAllItems.ifOrderMade = true;
@@ -209,12 +226,15 @@ namespace ShoppingApp.View
                 order.SetId();
                 PlaceForAllItems.StaticOrder = order;
                 OrderService.SendOrderToDb(order);
+                PlaceForAllItems.StaticAllItems = null;
                 int s = 0;
-                int limit = 300;
+                int limit = 20;
+                bool result = false;
                 string wait = "Please, wait";
                 string answer;
                 Thread check = new Thread(() =>
                 {
+                    ShoppingLogger.logger.Debug("Start checking answer from DB by Id.", Environment.CurrentManagedThreadId);
                     while (s != limit)
                     {
                         if (wait == "Please, wait....")
@@ -228,7 +248,9 @@ namespace ShoppingApp.View
                             {
                                 deliveryInfoText.Text = answer;
                             }));
+                            result = true;
                             MessageBox.Show($"Your order has been processed successfully. Thanks for trust.");
+                            ShoppingLogger.logger.Debug("Return successful answer by Id in DB.", Environment.CurrentManagedThreadId);
                             break;
                         }
                         else
@@ -241,7 +263,7 @@ namespace ShoppingApp.View
                         Thread.Sleep(1000);
                         wait += ".";
                     }
-                    if(s == limit)
+                    if(!result)
                     {
                         this.Dispatcher.Invoke(new Action(() =>
                         {

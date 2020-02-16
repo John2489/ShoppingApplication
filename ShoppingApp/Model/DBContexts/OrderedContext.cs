@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Logger;
+using Microsoft.EntityFrameworkCore;
 using ShoppingApp.Model.ObjectsForDB;
+using System;
 
 namespace ShoppingApp.Model.DBContexts
 {

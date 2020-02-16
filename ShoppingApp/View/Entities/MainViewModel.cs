@@ -2,6 +2,8 @@
 using System.Collections.ObjectModel;
 using ShoppingApp.Model.ObjectsForDB;
 using ShoppingApp.Model;
+using Logger;
+using System;
 
 namespace ShoppingApp.ViewModel
 {
@@ -10,6 +12,7 @@ namespace ShoppingApp.ViewModel
         public ObservableCollection<ImageViewModel> AllItems { get; set; } = new ObservableCollection<ImageViewModel>();
         public MainViewModel()
         {
+            ShoppingLogger.logger.Debug("Creation MainViewModel instans.", Environment.CurrentManagedThreadId);
             SortComparerBrand sortComparerBrand = new SortComparerBrand();
             List<Item> files = CRUDoperators.GetAll();
             files.Sort(sortComparerBrand);

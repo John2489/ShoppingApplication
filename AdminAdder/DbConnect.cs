@@ -37,11 +37,13 @@ namespace AdminAdder
     {
         public static void AddInDB(string name, string model, int cost, int quantity, byte[] image)
         {
+            int hash = DateTime.Now.GetHashCode();
+            if (hash < 0) hash *= (-1);
             using (ShopContext db = new ShopContext())
             {
                 Item item = new Item
                 {
-                    Id = DateTime.Now.GetHashCode(),
+                    Id = hash,
                     Name = name,
                     Model = model,
                     Cost = cost,

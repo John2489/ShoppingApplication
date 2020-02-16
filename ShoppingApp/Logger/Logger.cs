@@ -4,7 +4,6 @@ using System.IO;
 using System.Net;
 using System.Net.Mail;
 using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -12,45 +11,49 @@ namespace Logger
 {
     public class Logger
     {
+        private const int sizeFileLog = 30_000;
         private StackTrace trace;
         private MethodBase method;
+        private static DateTime dateFileLog;
+        private static int counterLog = 0;
         public void Info(string info, int threadId)
         {
             trace = new StackTrace();
             method = trace.GetFrames()[1].GetMethod();
-            WriteLog(InfoLine(trace, method, DateTime.Now, "INFO", threadId, info));
+            DateTime now = DateTime.Now;
+            WriteLog(InfoLine(trace, method, now, "INFO", threadId, info), now);
         }
         public void Debug(string info, int threadId)
         {
             trace = new StackTrace();
             method = trace.GetFrames()[1].GetMethod();
-            WriteLog(InfoLine(trace, method, DateTime.Now, "DEBUG", threadId, info));
+            DateTime now = DateTime.Now;
+            WriteLog(InfoLine(trace, method, now, "DEBUG", threadId, info), now);
         }
         public void Error(string info, int threadId)
         {
             trace = new StackTrace();
             method = trace.GetFrames()[1].GetMethod();
-            string infoLine = InfoLine(trace, method, DateTime.Now, "ERROR", threadId, info);
-            WriteLog(infoLine);
+            DateTime now = DateTime.Now;
+            string infoLine = InfoLine(trace, method, now, "ERROR", threadId, info);
+            WriteLog(infoLine, now);
             SendEmailAsync(infoLine).GetAwaiter();
         }
 
         private string InfoLine(StackTrace trace, MethodBase method,
                                 DateTime dateTime, string loggerType,
                                 int threadId, string info)
-            => $"{dateTime} | [{loggerType}] | "+
+            => $"{dateTime.ToString("yyyy'-'MM'-'dd' | 'HH':'mm':'ss'.'fffffff")} | [{loggerType}] | "+
                $"{trace.GetFrames()[1].GetMethod().ReflectedType.ToString()} | "+
                $"{method.Name} | [{threadId}] | {info}";
 
-        public void WriteLog(string infoLine)
+        public void WriteLog(string infoLine, DateTime now)
         {
-            MessageBox.Show(infoLine);
-            WriteInFileAsync(infoLine).GetAwaiter();
-            //write in file
+            WriteInFileAsync(infoLine, now).GetAwaiter();
         }
         private static async Task SendEmailAsync(string info)
         {
-            MailAddress from = new MailAddress("shopping.app180220@gmail.com", "John");
+            MailAddress from = new MailAddress("shopping.app180220@gmail.com", "SPL Application");
             MailAddress to = new MailAddress("johnturner.2489@gmail.com");
             MailMessage m = new MailMessage(from, to);
             m.Subject = "ERROR in Shopping application";
@@ -60,19 +63,53 @@ namespace Logger
             smtp.EnableSsl = true;
             await smtp.SendMailAsync(m);
         }
-        private static async Task WriteInFileAsync(string info)
+        private static async Task WriteInFileAsync(string info, DateTime now)
         {
-            string writePath = System.IO.Path.Combine(Environment.CurrentDirectory, @"logs\output.txt");
+            string writePath;
+
+            if (dateFileLog == null || dateFileLog.ToString("yyyyMMdd") == now.ToString("yyyyMMdd"))
+            {
+                writePath = Path.Combine(Environment.CurrentDirectory, 
+                                         @$"logs\log {now.ToString("yyyyMMdd")}_[{counterLog}].txt");
+                if(File.Exists(writePath))
+                {
+                    FileInfo fileInfo = new FileInfo(writePath);
+                    if (fileInfo.Length >= sizeFileLog)
+                    {
+                        counterLog++;
+                        writePath = Path.Combine(Environment.CurrentDirectory,
+                                                 @$"logs\log {now.ToString("yyyyMMdd")}_[{counterLog}].txt");
+                    }
+                }
+                else
+                {
+                    writePath = Path.Combine(Environment.CurrentDirectory,
+                                             @$"logs\log {now.ToString("yyyyMMdd")}_[{counterLog}].txt");
+                }
+            }
+            else
+            {
+                dateFileLog = now;
+                counterLog = 0;
+                writePath = Path.Combine(Environment.CurrentDirectory,
+                                         @$"logs\log {now.ToString("yyyyMMdd")}_[{counterLog}].txt");
+            }
+
             try
             {
-                using (StreamWriter sw = new StreamWriter(writePath, false, System.Text.Encoding.Default))
+                if (File.Exists(writePath))
                 {
-                    await sw.WriteLineAsync(info);
+                    using (StreamWriter sw = new StreamWriter(writePath, true, System.Text.Encoding.Default))
+                    {
+                        await sw.WriteLineAsync(info);
+                    }
                 }
-
-                using (StreamWriter sw = new StreamWriter(writePath, true, System.Text.Encoding.Default))
+                else
                 {
-                    await sw.WriteLineAsync($"Дозапись {info}");
+                    using (StreamWriter sw = new StreamWriter(writePath, false, System.Text.Encoding.Default))
+                    {
+                        await sw.WriteLineAsync(info);
+                    }
                 }
             }
             catch (Exception e)
@@ -82,4 +119,3 @@ namespace Logger
         }
     }
 }
-//ShoppindLogger.logger.Error("", Environment.CurrentManagedThreadId);

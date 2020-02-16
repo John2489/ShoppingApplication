@@ -2,6 +2,7 @@
 using ShoppingApp.Model.ObjectsForDB;
 using ShoppingApp.Model;
 using System.Linq;
+using Logger;
 
 namespace ShoppingApp.ViewModel
 {
@@ -9,6 +10,7 @@ namespace ShoppingApp.ViewModel
     {
         public static void SendOrderToDb(Order ord)
         {
+            ShoppingLogger.logger.Info("Sending order to DB.", Environment.CurrentManagedThreadId);
             CRUDoperators.SendOrder(new OrderedObject
             {
                 Id = ord.Id,
@@ -21,6 +23,9 @@ namespace ShoppingApp.ViewModel
                 DeliveryInfo = null
             }); ;
         }
-        public static string CheckAnswer(int id) => CRUDoperators.CheckAnswerInDbById(id);
+        public static string CheckAnswer(int id)
+        {
+            return CRUDoperators.CheckAnswerInDbById(id);
+        }
     }
 }

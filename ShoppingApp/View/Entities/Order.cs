@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Text.RegularExpressions;
 using System.Linq;
+using Logger;
 
 namespace ShoppingApp.ViewModel
 {
@@ -19,6 +20,7 @@ namespace ShoppingApp.ViewModel
         public string Address { get; set; } = String.Empty;
         public Order(ObservableCollection<OrderedItem> choosenList)
         {
+            ShoppingLogger.logger.Debug("Creation Order instans.", Environment.CurrentManagedThreadId);
             ChoosenList = choosenList;
             var costs = from t in ChoosenList select t.Cost;
             TotalCost = costs.ToArray().Sum();
@@ -26,12 +28,12 @@ namespace ShoppingApp.ViewModel
         }
         public bool Validation()
         {
+            ShoppingLogger.logger.Info("Checking validation in user lines.", Environment.CurrentManagedThreadId);
             string namePattern = @"^[A-Z][a-zA-Z]*$";
             string emailPattern = @"^(?("")(""[^""]+?""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
                              @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9]{2,17}))$";
             string phoneNumberPattern = @"\d{3,15}?";
 
-            //if ((FirstName.Length < 2) || (FirstName.Length > 15))
             if (!Regex.IsMatch(FirstName, namePattern, RegexOptions.IgnoreCase) || FirstName.Length < 2 || FirstName.Length > 15)
             {
                 MessageBox.Show("FirstName is incorrect.");
@@ -61,7 +63,10 @@ namespace ShoppingApp.ViewModel
         }
         public void SetId()
         {
-            Id = DateTime.Now.GetHashCode();
+            ShoppingLogger.logger.Info("Setting Id to order.", Environment.CurrentManagedThreadId);
+            int hash = DateTime.Now.GetHashCode();
+            if (hash < 0) hash *= (-1);
+            Id = hash;
         }
     }
 }

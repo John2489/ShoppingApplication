@@ -1,9 +1,13 @@
-﻿namespace ShoppingApp.ViewModel
+﻿using Logger;
+using System;
+
+namespace ShoppingApp.ViewModel
 {
     public class ImageViewModel
     {
         public ImageViewModel(int id, string brand, string series, byte[] image, int cost, int quantiry)
         {
+            ShoppingLogger.logger.Debug("Creation ImageViewModel instans.", Environment.CurrentManagedThreadId);
             Id = id;
             Brand = brand;
             Series = series;
